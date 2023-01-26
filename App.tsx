@@ -5,16 +5,23 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Appearance,
   Button,
   Image,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
+  Switch,
   Text,
+  TextInput,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
@@ -27,68 +34,97 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import like from './img/like-svgrepo-com.svg';
-
 function App(): JSX.Element {
-  const onclick = () => {
-    console.log('hello');
+  const onclick = (title: string) => {
+    console.log(title);
   };
+  const scheme = Appearance.getColorScheme();
+  const [text, onChangeText] = useState('');
+
   return (
-    <ScrollView
-      style={{
-        backgroundColor: '#2d2d31',
-      }}>
-      <SafeAreaView />
-      <View style={{paddingLeft: 20, paddingRight: 20}}>
-        <Text style={{color: '#fff', fontSize: 24, fontWeight: 600}}>
-          Movies
-        </Text>
-        {list.map((el, i) => (
-          <View
-            key={i}
-            style={{
-              marginTop: 20,
-              display: 'flex',
-              width: '100%',
-              flexWrap: 'wrap',
-              backgroundColor: '#535358',
-              borderRadius: 10,
-              flexDirection: 'row',
-              gap: 20,
-            }}>
-            {/* <Button onPress={onclick()} title=""> */}
-            <View>
-              <Image
-                style={{width: 70, height: 120, borderRadius: 10}}
-                source={{
-                  uri: `${el.Poster}`,
-                }}
-              />
-            </View>
-            <View
-              style={{
-                width: 'auto',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-              }}>
-              <Text style={{color: '#fff', maxWidth: '60%', fontSize: 12}}>
-                {el.Title}
-              </Text>
-              <View>
-                <Text style={{color: '#fff'}}>{el.Type}</Text>
-                <Text style={{color: '#fff'}}>{el.Year}</Text>
+    <KeyboardAvoidingView behavior={'padding'}>
+      <ScrollView
+        style={{
+          backgroundColor: scheme === 'dark' ? '#343458' : '#2d2d31',
+        }}>
+        <SafeAreaView />
+        <View style={{paddingLeft: 20, paddingRight: 20}}>
+          <Text style={{color: '#fff', fontSize: 24, fontWeight: '600'}}>
+            Movies
+          </Text>
+          {list.map((el, i) => {
+            const [isEnabled, setIsEnabled] = useState(false);
+            const toggleSwitch = () =>
+              setIsEnabled(previousState => !previousState);
+            return (
+              <View
+                key={i}
+                style={{
+                  marginTop: 20,
+                  display: 'flex',
+                  width: '100%',
+                  flexWrap: 'wrap',
+                  backgroundColor: isEnabled ? '#626267' : '#535358',
+                  borderRadius: 10,
+                  flexDirection: 'row',
+                  gap: 20,
+                }}>
+                <View>
+                  <Image
+                    style={{width: 70, height: 120, borderRadius: 10}}
+                    source={{
+                      uri: `${el.Poster}`,
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    width: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text style={{color: '#fff', maxWidth: '60%', fontSize: 12}}>
+                    {el.Title}
+                  </Text>
+                  <View>
+                    <Text style={{color: '#fff'}}>{el.Type}</Text>
+                    <Text style={{color: '#fff'}}>{el.Year}e</Text>
+                  </View>
+                  <Pressable onPressOut={() => onclick(el.Title)}>
+                    <Text>Press Here</Text>
+                  </Pressable>
+
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={onChangeText}
+                    keyboardType={'url'}
+                  />
+                  <Switch
+                    trackColor={{false: '#767577', true: '#81b0ff'}}
+                    thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={toggleSwitch}
+                    value={isEnabled}
+                  />
+                </View>
               </View>
-            </View>
-            {/* </Button> */}
-          </View>
-        ))}
-      </View>
-    </ScrollView>
+            );
+          })}
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+});
 
 const list = [
   {
