@@ -1,6 +1,20 @@
-import { Button, Text, View, FlatList, StyleSheet } from "react-native";
+import { Button, StyleSheet, Text, View, FlatList, Image } from "react-native";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export const HomeScreen = ({ navigation }) => {
+  const [json, setJson] = useState([]);
+  const fetchData = async () => {
+    const data = await axios.get("https://dummyjson.com/products?limit=10");
+    setJson(data.data.products);
+  };
+  useEffect(() => {
+    try {
+      fetchData();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   return (
     <View>
       <Text>Home screen</Text>
@@ -10,46 +24,43 @@ export const HomeScreen = ({ navigation }) => {
           navigation.navigate("Detail");
         }}
       ></Button>
-      <View>
-        <FlatList data={DATA} renderItem={({ item }) => <Item title={item.title} />} keyExtractor={(item) => item.id} />
+      <View sytle={styles.flatList}>
+        {json && (
+          <FlatList
+            data={json}
+            renderItem={({ item }) => <Item url={item} />}
+            keyExtractor={(item) => item.id}
+          />
+        )}
       </View>
     </View>
   );
 };
 
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
+const Item = ({ url }) => {
+  return (
+    <View>
+      <FlatList
+        data={url.images}
+        renderItem={({ item }) => (
+          <Image
+            style={styles.item}
+            source={{ uri: item }}
+            width={200}
+            height={110}
+            resizeMode="contain"
+          />
+        )}
+        keyExtractor={(item) => item}
+        horizontal={true}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
   item: {
-    backgroundColor: "#f9c2ff",
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
+    borderWidth: 1,
+    margin: 20,
   },
 });
-
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item",
-  },
-];
