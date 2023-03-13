@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>115957605305-iqnld58tos3o4bfh8q8rneq9fmg6oeds.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.115957605305-iqnld58tos3o4bfh8q8rneq9fmg6oeds</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCkMzSXrNUAvcuWIENDO53OIzUYZr8wwn4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>115957605305</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.company.busTrackly</string>
+	<key>PROJECT_ID</key>
+	<string>bustrackly</string>
+	<key>STORAGE_BUCKET</key>
+	<string>bustrackly.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:115957605305:ios:d4b0ebfdf754d79ff24c68</string>
+</dict>
+</plist>
