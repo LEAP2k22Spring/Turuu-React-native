@@ -7,7 +7,7 @@ export const LoginScreen = () => {
   const [text, onChangeText] = useState('');
   const [number, onChangeNumber] = useState('');
   const navigation = useNavigation();
-  console.log(text);
+
   return (
     <View className="w-full flex flex-col justify-center items-center h-full gap-[25px]">
       <View className="w-[300px]">
@@ -32,7 +32,7 @@ export const LoginScreen = () => {
       />
       <TouchableOpacity
         className="w-[300px] h-[45px] bg-black rounded-[5px] flex items-center justify-center"
-        onPress={() => navigation.navigate('Main' as never)}>
+        onPress={() => navigation.navigate('Home' as never)}>
         <Text className="text-[#fff] text-[16px] font-medium">Нэвтрэх</Text>
       </TouchableOpacity>
     </View>
