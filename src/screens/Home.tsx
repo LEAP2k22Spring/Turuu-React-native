@@ -1,11 +1,15 @@
-import MapView, {Marker} from 'react-native-maps';
-import {Image, SafeAreaView, Text, View} from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
 import React, {useCallback, useMemo, useRef, useState} from 'react';
+import {Image, SafeAreaView, Text, View, PermissionStatus} from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
+import {useNavigation} from '@react-navigation/native';
+import MapView, {Marker} from 'react-native-maps';
+import BottomSheet from '@gorhom/bottom-sheet';
 import {Button} from '../components';
 
 export const HomeScreen = () => {
   const [bottomSheet, setBottomSheet] = useState(0);
+
+  const {navigate} = useNavigation();
   const state = {
     latitude: 47.9119352,
     longitude: 106.9234799,
@@ -27,9 +31,20 @@ export const HomeScreen = () => {
 
   const shareLocation = () => {
     console.log('share location');
+    Geolocation.getCurrentPosition(
+      position => {
+        console.log(position.coords);
+      },
+      error => {
+        // See error code charts below.
+        console.log(error.code, error.message);
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
   };
 
   const logOut = () => {
+    navigate('Login' as never);
     console.log('log out');
   };
 
@@ -97,14 +112,3 @@ export const HomeScreen = () => {
 };
 
 // getData firebase functionality
-// const getData = async () => {
-//   await firestore()
-//     .collection('users')
-//     .doc('flI9g6bKCr88x8dn75Wu')
-//     .onSnapshot(documentSnapshot => {
-//       console.log('User data: ', documentSnapshot.data());
-//     });
-// };
-// useEffect(() => {
-//   getData();
-// }, []);
