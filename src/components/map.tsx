@@ -1,12 +1,11 @@
-"use client";
-import { useState } from "react";
-import "leaflet/dist/leaflet.css";
+import Map, { Marker } from "react-map-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import Map, { NavigationControl, Marker } from "react-map-gl";
 import maplibregl from "maplibre-gl";
+import { useEffect, useState } from "react";
 
 export default function MapLib() {
-  const [geoData] = useState({ lat: 37.33069543, lng: -122.02933632 });
+  const [geoData] = useState({ lat: 47.915006, lng: 106.9096304 });
+
   return (
     <Map
       mapLib={maplibregl}
@@ -15,8 +14,10 @@ export default function MapLib() {
         latitude: geoData.lat,
         zoom: 14,
       }}
-      style={{ width: "80%", height: "100vh" }}
+      style={{ width: "100%", height: "100vh" }}
       mapStyle="https://api.maptiler.com/maps/streets-v2/style.json?key=OntcH0MLn0RqaAlHWrmv"
-    ></Map>
+    >
+      <Marker color="red" longitude={geoData.lng} latitude={geoData.lat} />
+    </Map>
   );
 }
