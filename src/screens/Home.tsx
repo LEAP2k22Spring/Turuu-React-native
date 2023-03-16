@@ -1,5 +1,5 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {Image, SafeAreaView, Text, View, PermissionStatus} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {Image, SafeAreaView, Text, View} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import {useNavigation} from '@react-navigation/native';
 import MapView, {Marker} from 'react-native-maps';
@@ -8,17 +8,20 @@ import {Button} from '../components';
 
 export const HomeScreen = () => {
   const [bottomSheet, setBottomSheet] = useState(0);
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
 
   const {navigate} = useNavigation();
+
   const state = {
-    latitude: 47.9119352,
-    longitude: 106.9234799,
+    latitude: latitude === 0 ? 47.9119352 : latitude,
+    longitude: longitude === 0 ? 106.9234799 : longitude,
     latitudeDelta: 0.04,
     longitudeDelta: 0.04,
   };
-  const state2 = {
-    latitude: 47.9140227,
-    longitude: 106.9165197,
+  const marker = {
+    latitude: latitude,
+    longitude: longitude,
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   };
@@ -30,13 +33,14 @@ export const HomeScreen = () => {
   }, []);
 
   const shareLocation = () => {
-    console.log('share location');
+    Geolocation.requestAuthorization('whenInUse');
     Geolocation.getCurrentPosition(
       position => {
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
         console.log(position.coords);
       },
       error => {
-        // See error code charts below.
         console.log(error.code, error.message);
       },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
@@ -53,9 +57,9 @@ export const HomeScreen = () => {
       <MapView
         showsScale={true}
         className="flex-grow"
-        initialRegion={state}
+        region={state}
         showsBuildings={true}>
-        <Marker coordinate={state2} />
+        <Marker coordinate={marker} draggable />
       </MapView>
       <BottomSheet
         ref={bottomSheetRef}
