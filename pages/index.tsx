@@ -1,18 +1,9 @@
 import { useRouter } from "next/router";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/src/firebase";
-import { useEffect } from "react";
+import useCollection from "@/hooks/useCollection";
 
 export default function Home() {
   const router = useRouter();
-
-  const querySnapshot = async () => {
-    const get = await getDocs(collection(db, "users", "antEBB1GpDzeYp9xxQ7e"));
-    console.log(get);
-  };
-  useEffect(() => {
-    querySnapshot();
-  }, []);
+  const locations = useCollection("users");
 
   return (
     <div className="flex w-full h-[100vh] max-w-[1920px] mx-auto">
